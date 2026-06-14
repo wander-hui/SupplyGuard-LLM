@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupplyGuard-LLM 供应链漏洞检测</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="topbar">
+    <div class="logo">SG</div>
+    <div class="title">
+      <h1>SupplyGuard-LLM</h1>
+      <p>程序分析 × 大语言模型 协同的跨语言供应链漏洞检测</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="badge-kb" id="kbBadge">知识库加载中…</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="config">⚙️ 配置</div>
+    <div class="tab" data-tab="scan">🔍 扫描</div>
+    <div class="tab" data-tab="report">📊 报告</div>
+  </div>
+
+  <div class="container">
+    <!-- ============ 配置 ============ -->
+    <section class="panel active" id="panel-config">
+      <div class="card">
+        <h2><span class="dot"></span>大语言模型配置</h2>
+        <div class="row">
+          <div class="field">
+            <label>厂商</label>
+            <select id="provider">
+              <option value="glm">智谱 GLM</option>
+              <option value="deepseek">DeepSeek</option>
+            </select>
+            <div class="hint" id="providerHint"></div>
+          </div>
+          <div class="field">
+            <label>模型</label>
+            <input id="model" placeholder="留空使用默认">
+          </div>
+        </div>
+        <div class="field">
+          <label>API Key</label>
+          <input id="apiKey" type="password" placeholder="填写你的 API Key (留空且不勾选离线模式将无法调用)">
+          <div class="hint" id="keyHint"></div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>温度 (temperature)</label>
+            <input id="temperature" type="number" step="0.1" min="0" max="2" value="0.1">
+          </div>
+          <div class="field">
+            <label>自定义 API 端点 (可选)</label>
+            <input id="baseUrl" placeholder="留空使用厂商默认端点">
+          </div>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="mock"><span class="slider"></span></label>
+          <div><div class="lbl">离线模式 (Mock)</div><div class="sub">用规则模拟 LLM, 无需密钥/网络, 适合演示</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot"></span>程序分析后端</h2>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="useCodeql"><span class="slider"></span></label>
+          <div><div class="lbl">启用 CodeQL</div><div class="sub">关闭则使用内置轻量分析器 (零依赖, 始终可用)</div></div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>限定语言 (逗号分隔)</label>
+            <input id="codeqlLang" placeholder="如 python,cpp (留空自动探测)">
+          </div>
+          <div class="field">
+            <label>编译命令 (Java/C++ 需要)</label>
+            <input id="codeqlBuild" placeholder='如 "make -B" / "mvn -q compile"'>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot"></span>动态符号执行</h2>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="useSymbolic"><span class="slider"></span></label>
+          <div><div class="lbl">启用符号执行验证</div><div class="sub">C/C++ 用 angr、Python 用 CrossHair 验证可达性并生成 PoC</div></div>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="useSandbox"><span class="slider"></span></label>
+          <div><div class="lbl">Docker 沙箱实证</div><div class="sub">在隔离容器中实际运行 PoC, 确认 sink 真被触达</div></div>
+        </div>
+      </div>
+      <button class="btn" id="saveCfg">保存配置</button>
+      <div class="toast" id="cfgToast"></div>
+    </section>
+
+    <!-- ============ 扫描 ============ -->
+    <section class="panel" id="panel-scan">
+      <div class="card">
+        <h2><span class="dot"></span>开始扫描</h2>
+        <div class="field">
+          <label>扫描目标 (目录或文件的绝对/相对路径)</label>
+          <input id="target" placeholder="如 ./samples/cpp_project">
+        </div>
+        <button class="btn" id="startScan">🚀 开始扫描</button>
+        <button class="btn btn-ghost" id="loadSample" style="margin-left:8px;">填入示例路径</button>
+        <div class="toast" id="scanToast"></div>
+      </div>
+      <div class="card">
+        <h2><span class="dot"></span>实时日志 <span id="scanState"></span></h2>
+        <div class="console" id="console"><span class="ln" style="color:#5a6678">等待扫描启动…</span></div>
+      </div>
+    </section>
+
+    <!-- ============ 报告 ============ -->
+    <section class="panel" id="panel-report">
+      <div id="reportEmpty" class="empty">尚无报告，请先在「扫描」标签运行一次扫描。</div>
+      <div id="reportContent" style="display:none;"></div>
+    </section>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

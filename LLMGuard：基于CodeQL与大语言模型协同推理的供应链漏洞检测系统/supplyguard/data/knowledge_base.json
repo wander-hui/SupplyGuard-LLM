@@ -1,0 +1,229 @@
+[
+  {
+    "library": "fastjson",
+    "danger_api": ["parseObject", "parse", "JSON.parseObject", "JSON.parse"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["java"],
+    "bad_versions": ["1.2.24", "1.2.47", "1.2.68", "1.2.80"],
+    "description": "Fastjson autotype 反序列化, 历史多次 RCE。"
+  },
+  {
+    "library": "jackson-databind",
+    "danger_api": ["readValue", "enableDefaultTyping"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "Jackson 多态反序列化在开启 defaultTyping 时可被利用。"
+  },
+  {
+    "library": "snakeyaml",
+    "danger_api": ["load", "loadAll", "Yaml.load"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "SnakeYAML 默认构造器可反序列化任意类。"
+  },
+  {
+    "library": "log4j-core",
+    "danger_api": ["error", "info", "warn", "log"],
+    "cwe": "CWE-917",
+    "category": "dangerous-version",
+    "languages": ["java"],
+    "bad_versions": ["2.14.1", "2.15.0", "2.0", "2.13.0"],
+    "description": "Log4Shell (CVE-2021-44228) JNDI 注入。"
+  },
+  {
+    "library": "commons-collections",
+    "danger_api": ["InvokerTransformer", "TransformedMap"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["java"],
+    "bad_versions": ["3.1", "3.2.1"],
+    "description": "Commons-Collections 反序列化 gadget 链。"
+  },
+  {
+    "library": "java.io",
+    "danger_api": ["ObjectInputStream", "readObject"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "原生 Java 反序列化。"
+  },
+  {
+    "library": "java.lang.Runtime",
+    "danger_api": ["exec", "Runtime.exec"],
+    "cwe": "CWE-78",
+    "category": "command-exec",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "Runtime.exec 执行外部命令。"
+  },
+  {
+    "library": "java.lang.ProcessBuilder",
+    "danger_api": ["ProcessBuilder", "start"],
+    "cwe": "CWE-78",
+    "category": "command-exec",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "ProcessBuilder 执行外部命令。"
+  },
+  {
+    "library": "java.lang.reflect",
+    "danger_api": ["Class.forName", "newInstance"],
+    "cwe": "CWE-470",
+    "category": "dynamic-exec",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "反射动态加载类。"
+  },
+  {
+    "library": "javax.script",
+    "danger_api": ["ScriptEngine", "eval"],
+    "cwe": "CWE-94",
+    "category": "dynamic-exec",
+    "languages": ["java"],
+    "bad_versions": [],
+    "description": "ScriptEngine 执行脚本代码。"
+  },
+
+  {
+    "library": "pickle",
+    "danger_api": ["loads", "load", "Unpickler"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "pickle 反序列化任意对象可导致 RCE。"
+  },
+  {
+    "library": "cPickle",
+    "danger_api": ["loads", "load"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "cPickle 反序列化。"
+  },
+  {
+    "library": "pyyaml",
+    "danger_api": ["load", "full_load", "unsafe_load"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["python"],
+    "bad_versions": ["3.13", "5.1", "5.2", "5.3"],
+    "description": "yaml.load 未指定 SafeLoader 时可执行任意 Python 对象。"
+  },
+  {
+    "library": "yaml",
+    "danger_api": ["load", "full_load", "unsafe_load"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "同 pyyaml, 模块导入名为 yaml。"
+  },
+  {
+    "library": "marshal",
+    "danger_api": ["loads", "load"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "marshal 反序列化不安全。"
+  },
+  {
+    "library": "os",
+    "danger_api": ["system", "popen", "execv", "execve"],
+    "cwe": "CWE-78",
+    "category": "command-exec",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "os.system / os.popen 命令执行。"
+  },
+  {
+    "library": "subprocess",
+    "danger_api": ["call", "run", "Popen", "check_output", "check_call"],
+    "cwe": "CWE-78",
+    "category": "command-exec",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "subprocess 在 shell=True 时易命令注入。"
+  },
+  {
+    "library": "builtins",
+    "danger_api": ["eval", "exec", "compile", "__import__"],
+    "cwe": "CWE-94",
+    "category": "dynamic-exec",
+    "languages": ["python"],
+    "bad_versions": [],
+    "description": "eval/exec 动态执行代码。"
+  },
+  {
+    "library": "requests",
+    "danger_api": ["get", "post"],
+    "cwe": "CWE-918",
+    "category": "dangerous-version",
+    "languages": ["python"],
+    "bad_versions": ["2.19.1", "2.20.0"],
+    "description": "requests 旧版本存在 SSRF / 重定向凭据泄露问题 (示例)。"
+  },
+
+  {
+    "library": "yaml-cpp",
+    "danger_api": ["LoadFile", "Load"],
+    "cwe": "CWE-20",
+    "category": "deserialization",
+    "languages": ["cpp"],
+    "bad_versions": [],
+    "description": "yaml-cpp 解析不可信输入。"
+  },
+  {
+    "library": "boost.serialization",
+    "danger_api": ["text_iarchive", "binary_iarchive", "operator>>"],
+    "cwe": "CWE-502",
+    "category": "deserialization",
+    "languages": ["cpp"],
+    "bad_versions": [],
+    "description": "Boost.Serialization 反序列化不可信数据。"
+  },
+  {
+    "library": "libc.stdlib",
+    "danger_api": ["system", "popen"],
+    "cwe": "CWE-78",
+    "category": "command-exec",
+    "languages": ["cpp"],
+    "bad_versions": [],
+    "description": "system/popen 命令执行。"
+  },
+  {
+    "library": "libdl",
+    "danger_api": ["dlopen", "dlsym"],
+    "cwe": "CWE-94",
+    "category": "dynamic-exec",
+    "languages": ["cpp"],
+    "bad_versions": [],
+    "description": "dlopen 动态加载库。"
+  },
+  {
+    "library": "libc.string",
+    "danger_api": ["strcpy", "strcat", "sprintf", "gets", "memcpy", "scanf"],
+    "cwe": "CWE-120",
+    "category": "memory",
+    "languages": ["cpp"],
+    "bad_versions": [],
+    "description": "无边界检查的内存/字符串操作, 缓冲区溢出。"
+  },
+  {
+    "library": "openssl",
+    "danger_api": [],
+    "cwe": "CWE-327",
+    "category": "dangerous-version",
+    "languages": ["cpp"],
+    "bad_versions": ["1.0.1", "1.0.1f", "1.0.2", "3.0.0"],
+    "description": "OpenSSL 历史漏洞 (Heartbleed 等), 旧版本风险。"
+  }
+]

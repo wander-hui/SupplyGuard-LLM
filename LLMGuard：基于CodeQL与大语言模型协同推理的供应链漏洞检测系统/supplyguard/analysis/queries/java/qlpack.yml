@@ -1,0 +1,4 @@
+name: supplyguard/java-queries
+version: 0.1.0
+dependencies:
+  codeql/java-all: "*"

@@ -1,0 +1,26 @@
+# SupplyGuard-LLM 运行依赖
+#
+# ============ 核心功能 (必装: 无) ============
+# 依赖分析 / 知识库 / 内置分析器 / CodeQL 调用 / LLM 调用 / 报告生成
+# 全部仅使用 Python 标准库 (ast / urllib / xml / json / argparse / subprocess),
+# 因此在纯净的 Python 3.9+ 环境即可运行核心流程, 无需安装任何第三方包。
+#
+# CodeQL 后端依赖外部 codeql CLI (非 pip 包), 见 README 第六节。
+#
+# ============ 动态符号执行 (可选, 用 --use-symbolic 时需要) ============
+# C/C++ 符号执行引擎 (体积较大, 约数百 MB):
+angr>=9.2
+# 约束求解器 (angr 会自带, 显式列出便于单独使用):
+z3-solver>=4.12
+#
+# Python 符号执行 (C/C++ 用 angr, Python 用 CrossHair):
+crosshair-tool>=0.0.60
+#
+# 沙箱验证使用 Docker CLI (非 pip 包), 见 README。
+#
+# ============ Web 界面 (用 webapp 时需要) ============
+flask>=3.0
+#
+# ============ 可选增强 (不装也能跑) ============
+# requests>=2.28        # 若想用 requests 替代内置 urllib 调 LLM
+# rich>=13.0            # 更美观的终端输出

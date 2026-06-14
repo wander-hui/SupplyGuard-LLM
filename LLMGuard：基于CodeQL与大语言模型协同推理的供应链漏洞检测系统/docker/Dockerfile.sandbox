@@ -1,0 +1,16 @@
+# SupplyGuard-LLM PoC 沙箱镜像
+# 用于在隔离环境中编译/运行 PoC, 观察 sink 是否实际被触达 (C/C++ 与 Python)。
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        g++ gcc make strace libc6-dev \
+        python3 python3-yaml \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+# 容器以非 root 运行 (运行时还会叠加 --cap-drop ALL 等限制)
+RUN useradd -m runner
+USER runner
+
+CMD ["bash"]
